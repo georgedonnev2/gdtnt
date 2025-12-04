@@ -98,3 +98,5 @@ To githubgdv2.com:georgedonnev2/gdtnt-pvw.git
  * [new branch]      master -> master
 branch 'master' set up to track 'gdgitubv2pvw/master'.
 ```
+
+增加 `.gitignore`
