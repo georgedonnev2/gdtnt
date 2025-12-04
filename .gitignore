@@ -1,1 +1,2 @@
-CNAME
+# 忽略所有位置的 CNAME 文件
+**/CNAME
