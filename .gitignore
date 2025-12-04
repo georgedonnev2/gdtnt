@@ -1,2 +1,2 @@
-# 忽略所有位置的 CNAME 文件
-**/CNAME
+# 忽略 docs 目录中的 CNAME 文件
+docs/CNAME
