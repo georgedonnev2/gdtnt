@@ -1,4 +1,21 @@
+---
+title: 机械臂开发示例-251120
+layout: default
+parent: AI实验课
+nav_order: 11
+---
+
 # 机械臂开发示例-251120
+{: .no_toc }
+
+<details open markdown="block">
+  <summary>
+    目录
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
 
 ## 0、相关说明
 

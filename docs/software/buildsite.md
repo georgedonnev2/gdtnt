@@ -99,4 +99,3 @@ To githubgdv2.com:georgedonnev2/gdtnt-pvw.git
 branch 'master' set up to track 'gdgitubv2pvw/master'.
 ```
 
-增加 `.gitignore`
