@@ -1,7 +1,7 @@
 ---
 title: 首页
 layout: default
-nav_order: 1
+nav_order: 0
 ---
 
 <details open markdown="block">
