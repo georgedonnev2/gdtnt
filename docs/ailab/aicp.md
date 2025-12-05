@@ -1,3 +1,10 @@
+---
+title: 人工智能算力平台
+layout: default
+parent: AI Lab
+nav_order: 5
+---
+
 # 人工智能算力平台
 
 关于学院算力平台的使用说明。
