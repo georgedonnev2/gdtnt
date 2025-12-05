@@ -1,0 +1,5 @@
+ASR_URL = "http://172.18.144.18/svc/5R7yXQAt-1/v1/audio/transcriptions"
+TTS_URL = "http://172.18.144.18/svc/h7yw77di-1/v1/audio/speech"
+LLM_URL = "http://172.18.144.18/svc/DGsanOif-1/v1"
+LLM_MODEL_NAME = "qwen2.5:32b"
+TTS_MODEL_NAME = "CosyVoice-300M-SFT"
