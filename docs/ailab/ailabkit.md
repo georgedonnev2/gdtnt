@@ -17,6 +17,20 @@ nav_order: 2
 {:toc}
 </details>
 
+## 视觉实验箱
+
+登录后，执行 `cd /elephant-ai` 切换到目录 `/elephant-ai`：
+```bash
+# cd 
+jetson@jetson-Yahboom:~$ cd /elephant-ai
+
+# pwd 确认是在 /elephant-ai 目录
+jetson@jetson-Yahboom:/elephant-ai$ pwd
+/elephant-ai
+```
+
+
+
 ## 语音实验箱
 
 访问：[https://172.18.144.18/plugin/frontend/#/appview/AJ62kgyj?i=1](https://172.18.144.18/plugin/frontend/#/appview/AJ62kgyj?i=1)
