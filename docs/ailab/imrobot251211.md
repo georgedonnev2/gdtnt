@@ -25,7 +25,7 @@ nav_order: 20
 
 ## 相关说明
 
-- elephant-ai 源代码。
+- elephant-ai 源代码。[点击下载](./imrobot251211.assets/elephant-ai-251211.zip)
 - 开发板账号密码（如需要用到）：`jetson` / `yahboom`
 - 开发板IP地址。开发板透明窗口顶部的小屏幕显示的 `IPA: 172.18.xxx.xxx`，就是IP地址。或者在 `终端(terminal)` 执行命令 `ifconfig | grep 172` 也可获得。
 

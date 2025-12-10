@@ -63,20 +63,36 @@ gh_edit_branch: "main" # the branch that your docs is served from
 # Callouts
 callouts:
   warning:
-    title: Warning
+    title: 警示
+    color: red
+  warning-title:
+    title: 警示
     color: red
   note:
-    title: 注释
-    color: green
+    title: 信息
+    color: purple
+  note-title:
+    title: 信息
+    color: purple
   highlight:
+    title: 高亮
+    color: yellow
+  highlight-title:
     title: 高亮
     color: yellow
   new:
     title: 新增
-    color: blue
+    color: green
   new-title:
     title: 新增
+    color: green
+  important:
+    title: 重要
     color: blue
+  important-title:
+    title: 重要
+    color: blue
+
 
 #############
 # search
