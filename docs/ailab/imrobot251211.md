@@ -10,7 +10,7 @@ nav_order: 20
 
 在现有机械臂样例程序基础上，增加语音控制，而不是通过界面输入 `grab green cube and move to -80,200`。
 
-期望的实验结果。对连接了机械臂（开发板）的麦克风说话，比如：`抓取绿色方块，并移动到 -80 200`，然后机械臂能按照语音指令，去转去绿色方块，并移动到指定坐标位置。
+期望的实验结果。对着连接机械臂（开发板）的麦克风说话，比如：`抓取绿色方块，并移动到 -80 200`，期望机械臂能按照语音指令，抓取绿色方块，并移动到指定坐标位置。
 
 <details open markdown="block">
   <summary>
@@ -40,7 +40,9 @@ nav_order: 20
 
 ## 参考方案
 
-`agent.py` 中，会读取配置文件 `config.json` 中的 `voice` 的取值。如果是  `voice: True`，就会根据录音文件 `Recording.flac` 做相关处理，替代在界面上输入指令。
+`agent.py` 中，会读取配置文件 `config.json` 中的 `voice` 的取值。如果是  `voice: true`，就会根据录音文件 `Recording.flac` 做相关处理，替代在界面上输入指令。
+
+以下是 `agent.py` 的相关代码片段：
 
 ```python
 # ...
@@ -71,6 +73,9 @@ if __name__ == "__main__":
 
 
 `agent2.py` 和 `agent.py` 类似。可以读配置文件 `config.json` 中 `voice` 的配置，或者启动时带命令行参数 `sudo python3 agent2.py -v` 。
+
+以下是 `agent2.py` 的相关代码片段：
+
 ```python
 # ...
 def parse_arguments():
@@ -126,18 +131,19 @@ if __name__ == "__main__":
         exit_function()
 ```
 
-因此，参考方案如下：
+因此参考方案如下：
  
-- （和下面的方法，二选一即可）[方法1] 在开发板上启动一个 `终端(terminal)`，执行 `sudo python3 agent2.py -v`。（命令行参数 `-v`  是告知开发板处理语音文件的意思。）
-- （和上面的方法，二选一即可）[方法2] 或者，在开发板上启动一个 `终端(terminal)`，修改 `config.json` 中 `voice` 配置为 `voice: true`，然后执行 `sudo python3 agent.py`。
+- （和下面的方法，二选一即可）**[方法1]** 在开发板上启动一个 `终端(terminal)`，执行 `sudo python3 agent2.py -v`。（命令行参数 `-v`  是告知开发板处理语音文件的意思。）
+- （和上面的方法，二选一即可）**[方法2]** 或者，在开发板上启动一个 `终端(terminal)`，修改 `config.json` 中 `voice` 配置为 `voice: true`，然后执行 `sudo python3 agent.py`。
 
-- 在开发板上，再启动一个 `终端(terminal)`，运行 `q5.py`（待编写），将通过和开发板连接的麦克风说的话，生成 `Recording.flac` 语音文件，供机械臂识别语音并执行相关动作。
+- 在开发板上，再启动一个 `终端(terminal)`，运行 `q5.py`（待编写），实现将麦克风说的话，生成 `Recording.flac` 语音文件，供机械臂识别语音并执行相关动作。
 
 <hr>
 
-## 新建目录获取 elephant-ai 代码
+## 新建目录获取 elephant-ai 代码（建议）
 
 1. 用 `jetson` 账号登录开发板后，在 `jetson` 账号的 HOME 目录新建子目录 `ailab`，并切换到子目录 `ailab`。
+
 ```bash
 jetson@jetson-Yahboom:~$ cd
 jetson@jetson-Yahboom:~$ pwd
@@ -150,13 +156,14 @@ jetson@jetson-Yahboom:~/ailab$ pwd
 
 2. 下载 elephant-ai 源码：[点击下载](./imrobot251211.assets/elephant-ai-251211.zip)
 
-3. 从 HOME 目录下的 `Downloads` 子目录，复制 `elephant-ai-251211.zip` 到当前目录 `ailab`，然后执行 `unzip` 解压缩。
+3. 从 HOME 目录下的 `Downloads` 子目录，复制 `elephant-ai-251211.zip` 到当前目录 `ailab` 中，然后执行 `unzip` 解压缩。
+
 ```bash
 jetson@jetson-Yahboom:~/ailab$ cp ~/Downloads/elephant-ai-251211.zip .
 jetson@jetson-Yahboom:~/ailab$ unzip elephant-ai-251211.zip
 ```
 
-4. 验证样例代码是否工作正常。放几个积木到带 + 的方框中（比如绿色、蓝色积木，颜色面朝上），执行 `python3 agent2.py` （或者 `python3 agent.py`）启动样例程序。在出现的 `<USER>:` 提示符后，输入 `grab green cube and move to 0,200`，查看机械臂动作是否符合预期。
+4. 验证样例代码是否工作正常。放几个积木到带 + 的方框中（比如绿色、蓝色积木，颜色面朝上），执行 `python3 agent2.py` （或者 `python3 agent.py`）启动样例程序。稍后出现 `<USER>:` 提示符，然后输入比如  `grab green cube and move to 0,200`，查看机械臂动作是否符合预期。
 
 ```bash
 jetson@jetson-Yahboom:~/ailab/elephant-ai-251211$ python3 agent2.py
@@ -194,11 +201,10 @@ Objects arranged successfully
 
 ### 尝试录音
 
-1. 和大模型（比如 DeepSeek 等）交互：
-
-`jetson开发板，ubuntu系统，接了USB麦克风和喇叭，怎么把对麦克风说的话，保存为音频文件，保存为wav格式，并回放。请输出python代码样例。`
+1. 和大模型（比如 DeepSeek 等）交互，比如：`jetson开发板，ubuntu系统，接了USB麦克风和喇叭，怎么把对麦克风说的话，保存为音频文件，保存为wav格式，并回放。请输出python代码样例。`
 
 2. 大模型建议首先安装依赖的库：
+
 ```bash
 sudo apt-get update
 sudo apt-get install libportaudio2 portaudio19-dev python3-dev  # sounddevice的依赖
@@ -282,7 +288,13 @@ if __name__ == "__main__":
     record_and_playback()
 ```
 
-假定没有成功，可以尝试：
+假定没有录音不成功，可以检查 `Settings | sound` 相关设置是否恰当。
+- System Volume 是否足够大
+- Volume Levels 是否足够大
+- Output 是否选择合适的设备，并点击 `Test` 做测试，听听是否有声音播放。
+- Input 是否选择合适的设备，并对着麦克风说话，查看下方红色虚线是否足够长。期望红色虚线较长。
+
+![settings-sound](./imrobot251211.assets/sounds.png)
 
 ### 录音文件保存为 `flac` 格式
 
@@ -300,9 +312,9 @@ if __name__ == "__main__":
 
 ## 用语音指挥机械臂
 
-1. 在开发板上再新启动 `终端(terminals)`，并切换到实验目录中，然后运行 `python3 agent2.py -v`。也可以运行 `python3 agent.py`，运行之前先修改 `config.json` 中 `voice` 为 `voice:true`。
+1. 在开发板上启动 `终端(terminals)`，并切换到实验目录中，然后运行 `python3 agent2.py -v`。也可以运行 `python3 agent.py`，运行之前先修改 `config.json` 中 `voice` 为 `voice:true`。
 
-2. 在开发板上启动 `终端(terminals)`，并切换到实验目录中，然后运行 `python3 q5.py`，开始录音说话。比如，`抓取蓝色方块，并移动到 -80,200`。
+2. 在开发板上再新启动 `终端(terminals)`，并切换到实验目录中，然后运行 `python3 q5.py`，开始录音说话。比如，`抓取蓝色方块，并移动到 -80,200`。
 
 3. 可以尝试更多语音，比如：
   - `抓取鱼骨头，并移动到0,200`
