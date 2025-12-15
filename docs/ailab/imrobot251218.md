@@ -81,11 +81,14 @@ jetson@jetson-Yahboom:~/ailab$ unzip elephant-ai-251211.zip
 
 4、验证样例代码是否工作正常。放几个积木到带 + 的方框中（比如绿色、蓝色积木，颜色面朝上），执行 `python3 agent2.py` （或者 `python3 agent.py`）启动样例程序。稍后出现 `<USER>:` 提示符，然后输入比如  `grab green cube and move to 0,200`，查看机械臂动作是否符合预期。
 
+{: .highlight}
+确保不是在某个 Python 虚拟环境中运行，即命令行提示符前没有 `(gdpy310)` 或 `(base)` 等字样。否则会报某些库找不到。如果已在某个 Python 虚拟环境中，用 `conda deactivate` 退出。
+
 {: .highlight-title}
-> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`
+> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`<br>
 > 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
 > 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#新建目录获取-elephant-ai-代码建议) 以后，否则报 `openAI` 相关错误。<br>
-> 3、如需要加 `sudo` 才能执行成功，则 `grall.py`（待编写） 也按 `sudo python3 grall.py` 执行。
+
 
 ```bash
 jetson@jetson-Yahboom:~/ailab/elephant-ai-251211$ python3 agent2.py
@@ -189,6 +192,8 @@ Python 3.10.19
 jetson@jetson-Yahboom:~$ 
 ```
 
+<hr>
+
 ## 步骤三：尝试 Web 界面录制 WAV 文件
 
 和大模型交互后得到如下样例代码:
@@ -256,6 +261,11 @@ python3 grwav.py
 
 - 测试是否可以录音。
 
+
+{: .important}
+如果缺少什么库，可以在当前虚拟环境（比如 `gdpy310`）中用 `pip3 install 库名` 安装。一定要在所需虚拟环境中安装。
+
+
 {: .highlight-title}
 > 假定没有录音不成功，可以检查 `Settings | sound` 相关设置是否恰当。<br>
 > - System Volume 是否足够大<br>
@@ -265,141 +275,216 @@ python3 grwav.py
 > 
 > ![settings-sound](./imrobot251211.assets/sounds.png)
 
+<hr>
 
-## 录音（和播放）
+## 步骤四：尝试 Web 界面录制 FLAC 文件
 
-### 尝试录音
-
-1、和大模型（比如 DeepSeek 等）交互，比如：`jetson开发板，ubuntu系统，接了USB麦克风和喇叭，怎么把对麦克风说的话，保存为音频文件，保存为wav格式，并回放。请输出python代码样例。`
-
-2、大模型建议首先安装依赖的库：
-
-```bash
-sudo apt-get update
-sudo apt-get install libportaudio2 portaudio19-dev python3-dev  # sounddevice的依赖
-pip3 install sounddevice numpy scipy
-```
-
-3、并给出了样例代码。新建文件 `q5test.py` ，保存到开发板的 `/home/jetson/ailab/elephant-ai-251211` 目录中，先录音试试。
+继续和大模型交互，获得如何录制 FLAC 文件的样例代码，如下。在实验目录中新建 `grflac.py`，启动并在 Web 界面测试。
 
 ```python
-import sounddevice as sd
+# grflac.py
+
+import gradio as gr
 import numpy as np
-from scipy.io.wavfile import write as write_wav
-import subprocess
+import soundfile as sf  # 关键库
+from datetime import datetime
 import os
 
-# ========== 核心参数配置 (根据你的设备信息已优化) ==========
-# 录音设备参数
-INPUT_DEVICE = 'pulse'  # 使用你的USB麦克风硬件地址
-OUTPUT_DEVICE = 'pulse'  # 使用你的USB麦克风硬件地址
-# INPUT_DEVICE = 'plughw:3,0'  # 使用你的USB麦克风硬件地址
-SAMPLE_RATE = 44100          # 采样率 (Hz)，与你的设备匹配
-DURATION = 5                 # 录音时长 (秒)
-CHANNELS = 1                 # 声道数，单声道兼容性最好
-OUTPUT_FILENAME = 'recording.wav'
+def save_audio_as_flac(audio):
+    """
+    处理录制的音频并保存为FLAC文件。
+    audio参数: (采样率, 音频数据numpy数组)
+    """
+    if audio is None:
+        return "未检测到音频输入。"
 
-# ========== 主程序：录音、保存、回放 ==========
-def record_and_playback():
-    print(f"准备录音 {DURATION} 秒...")
-    print(f"输入设备: {INPUT_DEVICE}, 采样率: {SAMPLE_RATE}Hz")
-    
-    try:
-        # 1. 录制音频
-        print("▶️ 开始录音...")
-        audio_data = sd.rec(int(DURATION * SAMPLE_RATE),
-                            samplerate=SAMPLE_RATE,
-                            channels=CHANNELS,
-                            dtype='int16',        # 16位PCM格式[citation:5]
-                            device=INPUT_DEVICE)
-        sd.wait()  # 等待录音结束
-        print("✅ 录音结束。")
-        
-        # 尝试播放刚录制的音频
-        print("正在播放录音...")
-        sd.play(audio_data, SAMPLE_RATE, device=OUTPUT_DEVICE)
-        sd.wait()
-        print("播放结束。")
-        
-        # 2. 处理数据形状 (避免后续问题)
-        if audio_data.ndim > 1 and audio_data.shape[1] == 1:
-            audio_data = audio_data.squeeze()
-        
-        # 3. 保存为WAV文件
-        write_wav(OUTPUT_FILENAME, SAMPLE_RATE, audio_data)
-        print(f"💾 音频已保存为: {OUTPUT_FILENAME}")
-        
-        # 4. 验证并回放
-        print("\n正在尝试播放录音...")
-        if os.path.exists(OUTPUT_FILENAME):
-            # 方法1: 使用系统命令aplay播放 (最可靠)[citation:4]
-            print("🎵 使用系统音频设备播放...")
-            try:
-                subprocess.run(['aplay', '-D', 'default', OUTPUT_FILENAME], check=True)
-            except subprocess.CalledProcessError:
-                # 方法2: 备用方案，使用sd.play进行Python内部播放
-                print("⚠️  系统播放失败，尝试内部播放...")
-                sd.play(audio_data, SAMPLE_RATE)
-                sd.wait()
-            print("✅ 播放完成。")
-        else:
-            print("❌ 错误：录音文件未生成。")
-            
-    except Exception as e:
-        print(f"❌ 程序出错: {e}")
+    sample_rate, audio_data = audio
 
+    # 1. 创建保存目录（可选）
+    save_dir = "flac_recordings"
+    os.makedirs(save_dir, exist_ok=True)
+
+    # 2. 生成带时间戳的唯一FLAC文件名
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = os.path.join(save_dir, f"recording_{timestamp}.flac")  # 扩展名为.flac
+
+    # 3. 保存为FLAC文件
+    #    关键：指定格式为'FLAC'，并可选择压缩级别（0-8，默认5）
+    sf.write(file=filename,
+             data=audio_data,
+             samplerate=sample_rate,
+             format='FLAC',
+             subtype='PCM_16')  # 也可用 'PCM_24' 如果音频数据是24位的
+
+    # 4. 计算音频时长
+    duration = len(audio_data) / sample_rate
+
+    return f"✅ FLAC文件已保存至：{filename}\n采样率：{sample_rate}Hz，时长：{duration:.2f}秒"
+
+# 创建界面
+demo = gr.Interface(
+    fn=save_audio_as_flac,
+    inputs=gr.Audio(sources="microphone",
+                    type="numpy",
+                    label="点击开始录音",
+                    format="wav"),  # Gradio内部仍以wav格式录制
+    outputs="text",
+    title="Jetson麦克风录音器 (FLAC格式)",
+    description="录音将自动保存为无损压缩的FLAC格式文件。"
+)
+
+# 启动应用
 if __name__ == "__main__":
-    # 可选：运行前列出所有音频设备，方便调试
-    print("=== 可用的音频设备 ===")
-    print(sd.query_devices())
-    print("=" * 30)
-    
-    record_and_playback()
+    demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
-假定没有录音不成功，可以检查 `Settings | sound` 相关设置是否恰当。
-- System Volume 是否足够大
-- Volume Levels 是否足够大
-- Output 是否选择合适的设备，并点击 `Test` 做测试，听听是否有声音播放。
-- Input 是否选择合适的设备，并对着麦克风说话，查看下方红色虚线是否足够长。期望红色虚线较长。
-
-![settings-sound](./imrobot251211.assets/sounds.png)
-
-### 录音文件保存为 `flac` 格式
-
-- 继续和大模型交互，尝试将语音录制为 `flac` 文件。一种可行的选项是用 `ffmpeg` 将 `wav` 文件转换为 `flac` 文件。
-
-- 可积极尝试其他可行的方法。
-
-- 参考样例代码：[q5flac.py](./imrobot251211.assets/q5flac.py)
-
-### 录制为 `Recording.flac`
-
-参考样例代码：[q5.py](./imrobot251211.assets/q5.py)
+如何启动后端程序、浏览器测试，和 [尝试 web 界面录制 wav 文件](#步骤三尝试-web-界面录制-wav-文件) 类似，此处从略。
 
 <hr>
 
-## 用语音指挥机械臂
+## 步骤五：完成可用样例
 
-1. 在开发板上启动 `终端(terminals)`，并切换到实验目录中，然后运行 `python3 agent2.py -v`。也可以运行 `python3 agent.py`，运行之前先修改 `config.json` 中 `voice` 为 `voice:true`。
+### 录制程序
 
-2. 在开发板上再新启动 `终端(terminals)`，并切换到实验目录中，然后运行 `python3 q5.py`，开始录音说话。比如，`抓取蓝色方块，并移动到 -80,200`。
+继续和大模型交互，获得完成可用样例，如下。在实验目录中新建 `grall.py`，然后启动并在 Web 界面测试。
 
-3. 可以尝试更多语音，比如：
-  - `抓取鱼骨头，并移动到0,200`
-  - `把 6 个积木排成圆圈`
-  - ……
+```python
+import gradio as gr
+import numpy as np
+import soundfile as sf
+import shutil
+import os
 
-{: .note}
-至此，实验主要任务基本完成。
+# 固定的文件名
+FIXED_FLAC_FILE = "current_recording.flac"
+TARGET_FLAC_FILE = "Recording.flac"
+
+def save_and_process_audio(audio):
+    """录音完成后自动保存为FLAC文件"""
+    if audio is None:
+        return "❌ 未检测到音频输入", None
+    
+    sample_rate, audio_data = audio
+    
+    try:
+        # 保存为固定FLAC文件（覆盖模式）
+        sf.write(file=FIXED_FLAC_FILE,
+                 data=audio_data,
+                 samplerate=sample_rate,
+                 format='FLAC',
+                 subtype='PCM_16')
+        
+        duration = len(audio_data) / sample_rate
+        message = f"✅ 录音已保存: {FIXED_FLAC_FILE}\n时长: {duration:.1f}秒, 采样率: {sample_rate}Hz"
+        
+        return message, FIXED_FLAC_FILE
+    except Exception as e:
+        return f"❌ 保存失败: {str(e)}", None
+
+def copy_to_recording():
+    """复制文件到当前目录的Recording.flac"""
+    if not os.path.exists(FIXED_FLAC_FILE):
+        return f"❌ 找不到 {FIXED_FLAC_FILE}，请先录制音频"
+    
+    try:
+        # 复制文件
+        shutil.copy2(FIXED_FLAC_FILE, TARGET_FLAC_FILE)
+        
+        # 验证复制结果
+        if os.path.exists(TARGET_FLAC_FILE):
+            file_size = os.path.getsize(TARGET_FLAC_FILE) / 1024
+            return f"✅ 复制成功: {TARGET_FLAC_FILE} ({file_size:.1f}KB)"
+        else:
+            return "❌ 复制失败：目标文件未创建"
+    except Exception as e:
+        return f"❌ 复制失败: {str(e)}"
+
+# 创建精简界面
+with gr.Blocks(title="Jetson FLAC录音器", theme=gr.themes.Soft()) as demo:
+    gr.Markdown("## 🎤 Jetson FLAC录音器")
+    gr.Markdown("点击下方录音按钮开始/停止录音，录音将自动保存")
+    
+    # 录音组件
+    audio_input = gr.Audio(
+        sources="microphone",
+        type="numpy",
+        label="录音控制",
+        format="wav",
+        interactive=True
+    )
+    
+    # 状态显示
+    status_display = gr.Textbox(label="状态", value="等待录音...", lines=2)
+    
+    # 播放界面（录音完成后自动显示）
+    gr.Markdown("### 录音播放")
+    audio_output = gr.Audio(label="最新录音", type="filepath", interactive=False)
+    
+    # 操作按钮
+    gr.Markdown("### 文件操作")
+    copy_button = gr.Button("📁 执行指令：复制到Recording.flac", variant="primary", size="lg")
+    
+    # 设置事件处理
+    # 录音完成后自动保存并更新状态
+    audio_input.change(
+        fn=save_and_process_audio,
+        inputs=[audio_input],
+        outputs=[status_display, audio_output]
+    )
+    
+    # 复制按钮
+    copy_button.click(
+        fn=copy_to_recording,
+        inputs=None,
+        outputs=[status_display]
+    )
+
+# 启动应用
+if __name__ == "__main__":
+    print("启动Jetson FLAC录音器...")
+    print(f"录音文件: {FIXED_FLAC_FILE}")
+    print(f"目标文件: {TARGET_FLAC_FILE}")
+    
+    demo.launch(
+        server_name="0.0.0.0",
+        server_port=7860,
+        share=False
+    )
+```
+
+参考 Web 界面如下：
+![参考web界面](./imrobot251218.assets/grweb.png)
+
+简要说明如下：
+- 上部“录音控制”。用于麦克风录用。
+- 中间“状态”。显示相关信息。
+- 下部“录音播放”。用于播放录制好的 flac 文件，确保内容是正确的。
+- 底部“执行指令”按钮。将录制好的 flac 文件，复制到当前目录的 `Recording.flac`，供机械臂做后续处理。
+
+{: note}
+移动到某个坐标，建议说：移动到 x 等于 0，y 等于 200。这样说，能够被识别得更准确。
+
+### 启动机械臂程序
+
+新建 `终端(Terminal)` 运行 `python3 agent2.py -v` （或者 修改 `config.json` 中 `voice:true` 后，运行 `python3 agent.py`）
+
+{: .highlight}
+确保不是在某个 Python 虚拟环境中运行，即命令行提示符前没有 `(gdpy310)` 或 `(base)` 等字样。否则会报某些库找不到。如果已在某个 Python 虚拟环境中，用 `conda deactivate` 退出。
+
+{: .highlight-title}
+> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`<br>
+> 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
+> 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#新建目录获取-elephant-ai-代码建议) 以后，否则报 `openAI` 相关错误。<br>
+
 
 <hr>
 
 ## 拓展任务（可选）
 
-1. 完善录音代码 `q5.py`，比如：
-  - 执行 `python3 q5.py` 后，就一直运行。直到同时按下 `ctrl` 和 `c` 退出。
-  - 按某个键开始录音，然后说话录音，录音完成后按某个键此次结束录音。当前录音固定长度 x 秒。
+1. 学习 Gradio 基本用法，然后优化录制 Web 界面。比如：
+  - 调整界面元素布局。
+  - 调整界面配色。
+  - 学习如何分享界面：`你可以使用 Gradio 内置的共享功能，在几秒钟内分享你的演示或 Web 应用程序的链接。无需 JavaScript、CSS 或 Web 托管经验！`
 
 2. 优化机械臂代码 `agent2.py` （或 `agent.py`），比如：
   - 提示正在等待 `Recording.flac`。当前界面提示不友好。
