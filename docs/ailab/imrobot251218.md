@@ -8,7 +8,7 @@ nav_order: 22
 # 机械臂开发示例-251218
 {: .no_toc }
 
-[上次实验课](./imrobot251211.md) 通过 Python 程序实现对机械臂的语音控制。本地实验课将实现一个 Web 界面，在 Web 界面上语音控制机械臂。
+[上次实验课](./imrobot251211.md) 通过 Python 程序实现对机械臂的语音控制。本次实验课将实现一个 Web 界面，在 Web 界面上语音控制机械臂。
 
 
 <details open markdown="block">
@@ -40,7 +40,7 @@ nav_order: 22
 > 实验结束离开时：
 >
 > 1、椅子复位。放到桌子下面。<br>
-> 2、关机并拔掉电源。在开发板 `终端(terminal)` 执行命令 `shutdown -h now` 后，从开发板透明窗口观察并等待散热风扇停止，然后拔掉机械臂电源、开发板电源、显示屏电源。 
+> 2、关机并拔掉电源。在开发板 `终端(Terminal)` 执行命令 `shutdown -h now` 后，从开发板透明窗口观察并等待散热风扇停止，然后拔掉机械臂电源、开发板电源、显示屏电源。 
 
 <hr>
 
@@ -75,8 +75,8 @@ pwd # 命令执行结果应显示 /home/jetson/ailab
 3、从 HOME 目录下的 `Downloads` 子目录，复制 `elephant-ai-251211.zip` 到当前目录 `ailab` 中，然后执行 `unzip` 解压缩。
 
 ```bash
-jetson@jetson-Yahboom:~/ailab$ cp ~/Downloads/elephant-ai-251211.zip .
-jetson@jetson-Yahboom:~/ailab$ unzip elephant-ai-251211.zip
+cp ~/Downloads/elephant-ai-251211.zip .
+unzip elephant-ai-251211.zip
 ```
 
 4、验证样例代码是否工作正常。放几个积木到带 + 的方框中（比如绿色、蓝色积木，颜色面朝上），执行 `python3 agent2.py` （或者 `python3 agent.py`）启动样例程序。稍后出现 `<USER>:` 提示符，然后输入比如  `grab green cube and move to 0,200`，查看机械臂动作是否符合预期。
@@ -85,7 +85,8 @@ jetson@jetson-Yahboom:~/ailab$ unzip elephant-ai-251211.zip
 确保不是在某个 Python 虚拟环境中运行，即命令行提示符前没有 `(gdpy310)` 或 `(base)` 等字样。否则会报某些库找不到。如果已在某个 Python 虚拟环境中，用 `conda deactivate` 退出。
 
 {: .highlight-title}
-> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`<br>
+> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`
+> 
 > 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
 > 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#新建目录获取-elephant-ai-代码建议) 以后，否则报 `openAI` 相关错误。<br>
 
@@ -138,7 +139,7 @@ python3 --version # 比如输出显示 Python 3.8.10
 
 **1、执行 `conda`，确认 `conda` 是否已安装。如已安装，可跳过第2步。**
 
-**（如已安装请跳过此步）2、如果尚未安装 `conda`，则依次执行以下命令安装并激活：**
+**2、如果尚未安装 `conda`，则依次执行以下命令安装并激活：（如已安装请跳过此步）**
 
 ```bash
 cd # 切换到 jetson 用户的 HOME 目录
@@ -176,7 +177,7 @@ conda create -n gdpy310 python=3.10
 conda activate gdpy310
 ```
 
-**`conda activate 虚拟环境名` 和 `conda deactivate 虚拟环境名`，可激活/去激活相应 Python 虚拟环境：**
+**激活/去激活相应 Python 虚拟环境：`conda activate 虚拟环境名` 和 `conda deactivate 虚拟环境名`**
 
 ```bash
 jetson@jetson-Yahboom:~$ python3 --version
@@ -267,7 +268,8 @@ python3 grwav.py
 
 
 {: .highlight-title}
-> 假定没有录音不成功，可以检查 `Settings | sound` 相关设置是否恰当。<br>
+> 假定没有录音不成功，可以检查 `Settings | sound` 相关设置是否恰当。
+> 
 > - System Volume 是否足够大<br>
 > - Volume Levels 是否足够大<br>
 > - Output 是否选择合适的设备，并点击 `Test` 做测试，听听是否有声音播放。<br>
@@ -342,13 +344,15 @@ if __name__ == "__main__":
 
 <hr>
 
-## 步骤五：完成可用样例
+## 步骤五：完整可用样例
 
 ### 录制程序
-
-继续和大模型交互，获得完成可用样例，如下。在实验目录中新建 `grall.py`，然后启动并在 Web 界面测试。
+<br>
+继续和大模型交互，获得完整可用样例如下。在实验目录中新建 `grall.py`，然后启动并在 Web 界面测试。
 
 ```python
+# grall.py
+
 import gradio as gr
 import numpy as np
 import soundfile as sf
@@ -456,23 +460,24 @@ if __name__ == "__main__":
 ![参考web界面](./imrobot251218.assets/grweb.png)
 
 简要说明如下：
-- 上部“录音控制”。用于麦克风录用。
+- 上部“录音控制”。用于麦克风录制声音。
 - 中间“状态”。显示相关信息。
 - 下部“录音播放”。用于播放录制好的 flac 文件，确保内容是正确的。
 - 底部“执行指令”按钮。将录制好的 flac 文件，复制到当前目录的 `Recording.flac`，供机械臂做后续处理。
 
-{: note}
-移动到某个坐标，建议说：移动到 x 等于 0，y 等于 200。这样说，能够被识别得更准确。
+{: .note}
+移动到某个坐标，建议说：移动到 x 等于 0，y 等于 200。这样能够被识别得更准确。
 
 ### 启动机械臂程序
-
+<br>
 新建 `终端(Terminal)` 运行 `python3 agent2.py -v` （或者 修改 `config.json` 中 `voice:true` 后，运行 `python3 agent.py`）
 
 {: .highlight}
 确保不是在某个 Python 虚拟环境中运行，即命令行提示符前没有 `(gdpy310)` 或 `(base)` 等字样。否则会报某些库找不到。如果已在某个 Python 虚拟环境中，用 `conda deactivate` 退出。
 
 {: .highlight-title}
-> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`<br>
+> 关于 `sudo python3 agent.py` 还是 `python3 agent.py`
+> 
 > 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
 > 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#新建目录获取-elephant-ai-代码建议) 以后，否则报 `openAI` 相关错误。<br>
 
