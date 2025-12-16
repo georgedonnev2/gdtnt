@@ -2,12 +2,11 @@
 title: 建立Web站点
 layout: default
 parent: 软件使用
-# nav_order: 1
+nav_order: 50
 ---
 
-# 使用Github Pages建站
+# 使用Github Pages建站（未完待更新）
 {: .no_toc }
-
 
 <details open markdown="block">
   <summary>
