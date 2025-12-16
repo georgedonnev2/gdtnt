@@ -25,4 +25,5 @@ Ubuntu:
 
 nohup sh -c 'ping -D -i 60 172.18.144.18 >> ping18.log 2>&1' > /dev/null 2>&1 &
 
+nohup ping -D -i 60 172.18.144.18 > ping18.log &
 tail -f ping18.log
