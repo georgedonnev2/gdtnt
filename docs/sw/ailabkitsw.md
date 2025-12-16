@@ -42,6 +42,7 @@ sudo dpkg -i 下载的.deb安装包文件
 在开发板上启一个 `终端(Terminal)`，然后按 `Ctrl` + `空格` 键，看看是否已安装中文输入法。如已有，则可使用。如没有，请参考如下步骤安装。
 
 - 依次执行以下命令，安装中文输入法：
+
 ```bash
 sudo apt update
 sudo apt install fcitx fcitx-tools fcitx-config* fcitx-frontend* fcitx-module* fcitx-ui-* presage
