@@ -43,6 +43,7 @@ nav_order: 22
 - 开发板IP地址。开发板透明窗口顶部的小屏幕显示的 `IPA: 172.18.xxx.xxx`，就是IP地址。或者在 `终端(Terminal)` 执行命令 `ifconfig | grep 172` 也可获得。
 - 开发板截图。如需对开发板界面截图，可参考：[开发板截图](../sw/ailabkitsw.md/#开发板截图)
 - 安装 VSCode。如需要在开发板上安装 VSCode，可参考：[安装 VSCode](../sw/ailabkitsw.md/#安装-vscode)
+- 安装中文输入法。如需要在开发板上安装中文输入法，可参考：[安装和使用中文输入法](../sw/ailabkitsw.md/#安装和使用中文输入法)
 
 <hr>
 
