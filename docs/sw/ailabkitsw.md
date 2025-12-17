@@ -20,7 +20,7 @@ nav_order: 10
 
 <hr>
 
-## 安装 VSCode
+## 安装VSCode
 
 点击界面左下角的 `九宫格(Show Applications)`，然后搜索 `VSCode`。如能找到则打开直接使用。如没有找到，参考如下步骤安装 VSCode 到开发板。
 

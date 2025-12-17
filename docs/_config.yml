@@ -70,28 +70,52 @@ callouts:
     color: red
   note:
     title: 信息
-    color: purple
+    color: grey
   note-title:
     title: 信息
-    color: purple
+    color: grey
   highlight:
-    title: 高亮
+    title: 
     color: yellow
   highlight-title:
-    title: 高亮
+    title: 注意
     color: yellow
-  new:
-    title: 新增
-    color: green
-  new-title:
-    title: 新增
-    color: green
   important:
-    title: 重要
+    title: 提示
     color: blue
   important-title:
-    title: 重要
+    title: 提示
     color: blue
+  # warning:
+  #   title: 警示
+  #   color: red
+  # warning-title:
+  #   title: 警示
+  #   color: red
+  # note:
+  #   title: 信息
+  #   color: purple
+  # note-title:
+  #   title: 信息
+  #   color: purple
+  # highlight:
+  #   title: 注意
+  #   color: yellow
+  # highlight-title:
+  #   title: 注意
+  #   color: yellow
+  # new:
+  #   title: 新增
+  #   color: green
+  # new-title:
+  #   title: 新增
+  #   color: green
+  # important:
+  #   title: 重要
+  #   color: blue
+  # important-title:
+  #   title: 重要
+  #   color: blue
 
 
 #############

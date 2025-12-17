@@ -27,6 +27,9 @@ nav_order: 22
 - 接电源线时，从六边形桌子的中央六边形孔洞穿线到桌面上。不要从桌子边缘穿线到桌面上。
 - 机械臂电源拔出时，用手扶着机械臂，自然卧倒在开发板上面即可。不要折叠机械臂。
 - 断电时，拔掉桌面上相关设备的电源接口即可。不必拔下桌子下面的插头。
+- 天干物燥，要多补充水分。水杯、饮料瓶等拧紧盖子，以免泼洒到教具上。
+- {: important}
+1、椅子复位。放到桌子下面。
 
 {: .important-title}
 > 实验结束离开时：
@@ -37,12 +40,12 @@ nav_order: 22
 <hr>
 
 ## 相关信息
-<br>
+
 - elephant-ai 源代码。[点击下载](./imrobot251211.assets/elephant-ai-251211.zip)
 - 开发板账号密码（如需要用到）：`jetson` / `yahboom`
 - 开发板IP地址。开发板透明窗口顶部的小屏幕显示的 `IPA: 172.18.xxx.xxx`，就是IP地址。或者在 `终端(Terminal)` 执行命令 `ifconfig | grep 172` 也可获得。
 - 开发板截图。如需对开发板界面截图，可参考：[开发板截图](../sw/ailabkitsw.md/#开发板截图)
-- 安装 VSCode。如需要在开发板上安装 VSCode，可参考：[安装 VSCode](../sw/ailabkitsw.md/#安装-vscode)
+- 安装 VSCode。如需要在开发板上安装 VSCode，可参考：[安装 VSCode](../sw/ailabkitsw.md/#安装vscode)
 - 安装中文输入法。如需要在开发板上安装中文输入法，可参考：[安装和使用中文输入法](../sw/ailabkitsw.md/#安装和使用中文输入法)
 
 <hr>
@@ -57,11 +60,9 @@ nav_order: 22
 - 在开发板上，再启动一个 `终端(Terminal)`，运行 `grall.py`（待编写），并在浏览器打开 `localhost:7860`，实现将麦克风说的话，生成 `Recording.flac` 语音文件，供机械臂识别语音并执行相关动作。
 
 
-
-
 <hr>
 
-## 步骤一：新建目录获取 elephant-ai 代码（建议）
+## 步骤一：新建目录获取elephant-ai代码（建议）
 
 1、用 `jetson` 账号登录开发板后，在 `jetson` 账号的 HOME 目录新建子目录 `ailab`，并切换到子目录 `ailab`。
 
@@ -196,9 +197,12 @@ Python 3.10.19
 jetson@jetson-Yahboom:~$ 
 ```
 
+{: .important}
+激活某个 Python 虚拟环境后，命令行提示符前有 `(base)` 等字样。
+
 <hr>
 
-## 步骤三：尝试 Web 界面录制 WAV 文件
+## 步骤三：尝试Web界面录制WAV文件
 
 和大模型交互后得到如下样例代码:
 
@@ -269,6 +273,13 @@ python3 grwav.py
 {: .important}
 如果缺少什么库，可以在当前虚拟环境（比如 `gdpy310`）中用 `pip3 install 库名` 安装。一定要在所需虚拟环境中安装。
 
+{: .important-title}
+> 关于浏览器输入网址
+>
+> 1、开发板浏览器输入网址是 `localhost:7860`（或 `127.0.0.1:7860`），而不是 `0.0.0.0:7860`。<br>
+> 2、在局域网的其他电脑，还可以通过 `开发板IP地址:7860` 访问。<br>
+> 3、`0.0.0.0` 并不是浏览器可访问的IP地址。<br>
+> 4、`demo.launch(server_name="0.0.0.0", server_port=7860)` 中的 `0.0.0.0`，表示既可以在开发板上通过本机地址访问（即 `localhost:7860` 或 `127.0.0.1:7860`），还可以被局域网的其他电脑访问（即 `开发板IP地址:7860` ）。
 
 {: .highlight-title}
 > 假定没有录音不成功，可以检查 `Settings | sound` 相关设置是否恰当。
@@ -276,13 +287,14 @@ python3 grwav.py
 > - System Volume 是否足够大<br>
 > - Volume Levels 是否足够大<br>
 > - Output 是否选择合适的设备，并点击 `Test` 做测试，听听是否有声音播放。<br>
+> - Output 的 Balance 是否在中间。<br>
 > - Input 是否选择合适的设备，并对着麦克风说话，查看下方红色虚线是否足够长。期望红色虚线较长。<br>
 > 
 > ![settings-sound](./imrobot251211.assets/sounds.png)
 
 <hr>
 
-## 步骤四：尝试 Web 界面录制 FLAC 文件
+## 步骤四：尝试Web界面录制FLAC文件
 
 继续和大模型交互，获得如何录制 FLAC 文件的样例代码，如下。在实验目录中新建 `grflac.py`，启动并在 Web 界面测试。
 
@@ -343,7 +355,7 @@ if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
-如何启动后端程序、浏览器测试，和 [尝试 web 界面录制 wav 文件](#步骤三尝试-web-界面录制-wav-文件) 类似，此处从略。
+如何启动后端程序、浏览器测试，和 [尝试web界面录制wav文件](#步骤三尝试web界面录制wav文件) 类似，此处从略。
 
 <hr>
 
@@ -351,6 +363,7 @@ if __name__ == "__main__":
 
 ### 录制程序
 <br>
+
 继续和大模型交互，获得完整可用样例如下。在实验目录中新建 `grall.py`，然后启动并在 Web 界面测试。
 
 ```python
@@ -473,6 +486,7 @@ if __name__ == "__main__":
 
 ### 启动机械臂程序
 <br>
+
 新建 `终端(Terminal)` 运行 `python3 agent2.py -v` （或者 修改 `config.json` 中 `voice:true` 后，运行 `python3 agent.py`）
 
 {: .highlight}
@@ -482,7 +496,7 @@ if __name__ == "__main__":
 > 关于 `sudo python3 agent.py` 还是 `python3 agent.py`
 > 
 > 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
-> 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#新建目录获取-elephant-ai-代码建议) 以后，否则报 `openAI` 相关错误。<br>
+> 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#步骤一新建目录获取elephant-ai代码建议) 以后，否则报 `openAI` 相关错误。<br>
 
 
 <hr>
