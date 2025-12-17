@@ -25,17 +25,11 @@ nav_order: 22
 ## 注意事项
 
 - 接电源线时，从六边形桌子的中央六边形孔洞穿线到桌面上。不要从桌子边缘穿线到桌面上。
+- 实验结束离开时，关机并拔掉电源。在开发板 `终端(Terminal)` 执行命令 `shutdown -h now` 后，从开发板透明窗口观察并等待散热风扇停止，然后拔掉机械臂电源、开发板电源、显示屏电源。 
 - 机械臂电源拔出时，用手扶着机械臂，自然卧倒在开发板上面即可。不要折叠机械臂。
 - 断电时，拔掉桌面上相关设备的电源接口即可。不必拔下桌子下面的插头。
+- 实验结束离开时，椅子复位，放到桌子下面。
 - 天干物燥，要多补充水分。水杯、饮料瓶等拧紧盖子，以免泼洒到教具上。
-- {: important}
-1、椅子复位。放到桌子下面。
-
-{: .important-title}
-> 实验结束离开时：
->
-> 1、椅子复位。放到桌子下面。<br>
-> 2、关机并拔掉电源。在开发板 `终端(Terminal)` 执行命令 `shutdown -h now` 后，从开发板透明窗口观察并等待散热风扇停止，然后拔掉机械臂电源、开发板电源、显示屏电源。 
 
 <hr>
 
@@ -44,9 +38,9 @@ nav_order: 22
 - elephant-ai 源代码。[点击下载](./imrobot251211.assets/elephant-ai-251211.zip)
 - 开发板账号密码（如需要用到）：`jetson` / `yahboom`
 - 开发板IP地址。开发板透明窗口顶部的小屏幕显示的 `IPA: 172.18.xxx.xxx`，就是IP地址。或者在 `终端(Terminal)` 执行命令 `ifconfig | grep 172` 也可获得。
-- 开发板截图。如需对开发板界面截图，可参考：[开发板截图](../sw/ailabkitsw.md/#开发板截图)
-- 安装 VSCode。如需要在开发板上安装 VSCode，可参考：[安装 VSCode](../sw/ailabkitsw.md/#安装vscode)
-- 安装中文输入法。如需要在开发板上安装中文输入法，可参考：[安装和使用中文输入法](../sw/ailabkitsw.md/#安装和使用中文输入法)
+- 开发板截图。如需对开发板界面截图，可参考：[开发板截图](../sw/ailabkitsw.md/#开发板screenshot截图)
+- 安装 VSCode。如需要在开发板上安装 VSCode，可参考：[安装VSCode](../sw/ailabkitsw.md/#开发板安装vscode)
+- 安装中文输入法。如需要在开发板上安装中文输入法，可参考：[安装Google拼音](../sw/ailabkitsw.md/#安装google拼音)
 
 <hr>
 
@@ -91,8 +85,8 @@ unzip elephant-ai-251211.zip
 {: .highlight-title}
 > 关于 `sudo python3 agent.py` 还是 `python3 agent.py`
 > 
-> 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
-> 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#新建目录获取-elephant-ai-代码建议) 以后，否则报 `openAI` 相关错误。<br>
+> 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。确实需要加 `sudo` 时再加。<br>
+> 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#步骤一新建目录获取elephant-ai代码建议) 以后。否则报 `openAI` 相关错误。<br>
 
 
 ```bash
@@ -472,7 +466,7 @@ if __name__ == "__main__":
     )
 ```
 
-参考 Web 界面如下：
+Web 参考界面如下：
 ![参考web界面](./imrobot251218.assets/grweb.png)
 
 简要说明如下：
@@ -495,7 +489,7 @@ if __name__ == "__main__":
 {: .highlight-title}
 > 关于 `sudo python3 agent.py` 还是 `python3 agent.py`
 > 
-> 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。<br>
+> 1、sudo 是 Linux 系统中的一个重要命令，它的全称是 "superuser do"。这个命令允许经过验证的用户以其他用户的身份来运行命令，通常是以超级用户（root）的身份运行命令。确实需要加 `sudo` 时再加。<br>
 > 2、由于开发板环境安装差异（今后将统一），部分开发板仍需要加 `sudo` 才能执行，即使 [新复制代码](#步骤一新建目录获取elephant-ai代码建议) 以后，否则报 `openAI` 相关错误。<br>
 
 

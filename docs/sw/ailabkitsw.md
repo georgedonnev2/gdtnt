@@ -20,7 +20,7 @@ nav_order: 10
 
 <hr>
 
-## 安装VSCode
+## 开发板安装VSCode
 
 点击界面左下角的 `九宫格(Show Applications)`，然后搜索 `VSCode`。如能找到则打开直接使用。如没有找到，参考如下步骤安装 VSCode 到开发板。
 
@@ -37,7 +37,7 @@ sudo dpkg -i 下载的.deb安装包文件
 
 <hr>
 
-## 安装和使用中文输入法
+## 安装Google拼音
 
 在开发板上启一个 `终端(Terminal)`，然后按 `Ctrl` + `空格` 键，看看是否已安装中文输入法。如已有，则可使用。如没有，请参考如下步骤安装。
 
@@ -73,7 +73,7 @@ sudo apt install fcitx-googlepinyin
 
 <hr>
 
-## 开发板截图
+## 开发板Screenshot截图
 
 在英伟达开发板上，如需要截图，除了手机拍照，还可使用内置应用 `Screenshot`。点击界面左下角的 `九宫格(Show Applications)`，然后搜索 `Screenshot`，就可以找到该应用。
 
