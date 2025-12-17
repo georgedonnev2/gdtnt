@@ -75,7 +75,7 @@ callouts:
     title: 信息
     color: grey
   highlight:
-    title: 
+    title: 注意
     color: yellow
   highlight-title:
     title: 注意
