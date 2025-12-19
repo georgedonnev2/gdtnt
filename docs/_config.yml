@@ -70,10 +70,10 @@ callouts:
     color: red
   note:
     title: 信息
-    color: green
+    color: grey-dk
   note-title:
     title: 信息
-    color: green
+    color: grey-dk
   highlight:
     title: 注意
     color: yellow
